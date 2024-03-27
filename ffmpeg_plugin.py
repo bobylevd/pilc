@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import subprocess
 
 
 class FFMpegPlugin:
@@ -19,7 +20,7 @@ class FFMpegPlugin:
         ffmpeg_command = ["ffmpeg", "-i", filename, *self.ffmpeg_flags, out]
 
         self.logger.debug(f"processing file {filename} with ffmpeg")
-        process = await asyncio.create_subprocess_exec(*ffmpeg_command)
+        process = await asyncio.create_subprocess_exec(*ffmpeg_command, creationflags=subprocess.CREATE_NO_WINDOW)
 
         await process.wait()
         await self.file_queue.mark_processed(out)
