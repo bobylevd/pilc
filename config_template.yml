@@ -1,0 +1,26 @@
+api_id: ""
+api_hash: ""
+phone_number: "" # with country code
+chat_id: # int, not str
+input_folder: ""
+output_folder: ""
+ffmpeg_flags:
+  - "-y"
+  - "-r"
+  - "30"
+  - "-vf"
+  - "scale=1280:720"
+  - "-aspect"
+  - "16:9"
+  - "-b:v"
+  - "2048k"
+  - "-c:v"
+  - "h264_amf" # update to any encoder available hardware ones: (h264_amf, h264_nvenc, h264_qsv)
+  - "-preset"
+  - "slow"
+  - "-maxrate"
+  - "2M"
+  - "-bufsize"
+  - "4M"
+  - "-movflags"
+  - "+faststart"

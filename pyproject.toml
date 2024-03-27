@@ -1,0 +1,20 @@
+[project]
+name = "pilc"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Dmytro Bobylov", email = "gh@dbobylev.info"},
+]
+dependencies = [
+    "pyrogram>=2.0.106",
+    "TgCrypto>=1.2.5",
+    "watchdog>=4.0.0",
+    "pyyaml>=6.0.1",
+]
+requires-python = "==3.11.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
