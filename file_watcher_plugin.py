@@ -30,7 +30,7 @@ class FileWatcherPlugin(FileSystemEventHandler):
         return await self.to_process.get()
 
     def on_created(self, event):
-        if not event.is_directory:
+        if not event.is_directory and event.src_path.endswith(".mp4"):
             self.logger.debug(f"new file added: `{event.src_path}`")
             asyncio.run_coroutine_threadsafe(self.add_file(event.src_path), self.loop)
 
