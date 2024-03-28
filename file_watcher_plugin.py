@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os.path
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -30,9 +31,17 @@ class FileWatcherPlugin(FileSystemEventHandler):
         return await self.to_process.get()
 
     def on_created(self, event):
-        if not event.is_directory and event.src_path.endswith(".mp4"):
-            self.logger.debug(f"new file added: `{event.src_path}`")
-            asyncio.run_coroutine_threadsafe(self.add_file(event.src_path), self.loop)
+        filename = os.path.basename(event.src_path)
+        """
+        AMD ReLive creates some temp folders and then saves the output file first as an "out.mp4"
+        then as a Replay_*.mp4 in root folder and then finally moves it to corresponding sub-folder
+        which is why there are these checks.
+        Should probably work with other recording apps fine.
+        """
+        if os.path.dirname(os.path.abspath(event.src_path)) != os.path.normpath(self.watch_folder):
+            if not event.is_directory and filename.endswith(".mp4") and filename != "out.mp4":
+                self.logger.debug(f"new file added: `{event.src_path}`")
+                asyncio.run_coroutine_threadsafe(self.add_file(event.src_path), self.loop)
 
     async def start_monitoring(self):
         self.logger.debug(f"starting folder monitoring for folder: `{self.watch_folder}`")
