@@ -1,10 +1,11 @@
 import asyncio
+import logging.config
 
 import yaml
 
-from ffmpeg_plugin import FFMpegPlugin
-from file_watcher_plugin import FileWatcherPlugin
-from telegram_plugin import TelegramPlugin
+from plugins.ffmpeg_plugin import FFMpegPlugin
+from plugins.file_watcher_plugin import FileWatcherPlugin
+from plugins.telegram_plugin import TelegramPlugin
 
 
 class ShittyClips:
@@ -20,6 +21,7 @@ class ShittyClips:
 
 
 def main():
+    logging.config.fileConfig("logging_config.ini")
     with open("./config.yml", "r") as config_file:
         config = yaml.safe_load(config_file)
 

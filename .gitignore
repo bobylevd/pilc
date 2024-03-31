@@ -5,3 +5,4 @@ config.yml
 *.session
 *.session-journal
 .pdm-python
+*.log
