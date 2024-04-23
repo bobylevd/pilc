@@ -12,6 +12,7 @@ class FileWatcherPlugin(FileSystemEventHandler):
         self.to_process = asyncio.Queue()
         self.processed_files = asyncio.Queue()
         self.watch_folder = config["input_folder"]
+        self.output_folder = config["output_folder"]
         self.observer = Observer()
         self.loop = loop
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
@@ -38,6 +39,10 @@ class FileWatcherPlugin(FileSystemEventHandler):
         which is why there are these checks.
         Should probably work with other recording apps fine.
         """
+        if os.path.commonpath([self.output_folder, os.path.abspath(event.src_path)]) == self.output_folder:
+            self.logger.debug(f"Ignored file in optimized folder: `{event.src_path}`")
+            return
+
         if os.path.dirname(os.path.abspath(event.src_path)) != os.path.normpath(self.watch_folder):
             if not event.is_directory and filename.endswith(".mp4") and filename != "out.mp4":
                 self.logger.debug(f"new file added: `{event.src_path}`")
