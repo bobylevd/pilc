@@ -39,7 +39,9 @@ class FileWatcherPlugin(FileSystemEventHandler):
         which is why there are these checks.
         Should probably work with other recording apps fine.
         """
-        if os.path.commonpath([self.output_folder, os.path.abspath(event.src_path)]) == self.output_folder:
+        if os.path.commonpath(
+                [self.output_folder, os.path.abspath(event.src_path)]
+        ) == os.path.abspath(self.output_folder):
             self.logger.debug(f"Ignored file in optimized folder: `{event.src_path}`")
             return
 
